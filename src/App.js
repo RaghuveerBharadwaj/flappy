@@ -1,19 +1,19 @@
-import React from 'react';
-import './App.scss';
-import * as Matter from 'matter-js'
+import React from "react";
+import "./App.css";
+import * as Matter from "matter-js";
 
 function App() {
   React.useEffect(() => {
     /**
- *
- * Flappy Bird Game
- * 
- * Use spacebar or click to jump and avoid walls
- * Source : J Scott Smith
- *
- */
+     *
+     * Flappy Bird Game
+     *
+     * Use spacebar or click to jump and avoid walls
+     * Source : J Scott Smith
+     *
+     */
 
-    /* ===================================================== 
+    /* =====================================================
      * Setup Matter Engine
      * ================================================== */
 
@@ -33,7 +33,7 @@ function App() {
     let height;
 
     function setupMatter() {
-      element = document.getElementById('main');
+      element = document.getElementById("main");
       pixelRatio = window.devicePixelRatio || 1;
       width = window.innerWidth;
       height = window.innerHeight;
@@ -51,7 +51,7 @@ function App() {
           width: width,
           height: height,
           pixelRatio: pixelRatio,
-          background: 'orange',
+          background: "orange",
           hasBounds: false,
           enabled: false,
           wireframes: false,
@@ -70,24 +70,24 @@ function App() {
           showVertexNumbers: false,
           showConvexHulls: false,
           showInternalEdges: false,
-          showMousePosition: false
-        }
+          showMousePosition: false,
+        },
       });
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * Event Listener and Handlers
      * ================================================== */
 
     function addEventListeners() {
-      window.addEventListener('click', handleClick, false);
-      window.addEventListener('touchstart', handleTouchstart, false);
-      window.addEventListener('keydown', handleKeydown, false);
-      window.addEventListener('resize', handleResize, false);
+      window.addEventListener("click", handleClick, false);
+      window.addEventListener("touchstart", handleTouchstart, false);
+      window.addEventListener("keydown", handleKeydown, false);
+      window.addEventListener("resize", handleResize, false);
     }
 
     function handleResize() {
-      window.location.reload()
+      window.location.reload();
     }
 
     function handleKeydown(event) {
@@ -106,7 +106,7 @@ function App() {
       bumpBird();
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * The Bird Class
      * ================================================== */
 
@@ -119,7 +119,7 @@ function App() {
       // this.body.render.sprite.texture = 'https://www.stickpng.com/assets/thumbs/584c69846e7d5809d2fa6366.png'
       // this.body.render.sprite.xScale = .2
       // this.body.render.sprite.yScale = .2
-      this.body.restitution = .1;
+      this.body.restitution = 0.1;
     };
 
     Bird.prototype.addBird = function () {
@@ -131,22 +131,20 @@ function App() {
     };
 
     Bird.prototype.setHit = function () {
-      this.body.render.fillStyle = 'tomato';
-      this.body.render.strokeStyle = 'red';
-    }
+      this.body.render.fillStyle = "tomato";
+      this.body.render.strokeStyle = "red";
+    };
 
     Bird.prototype.sad = function () {
-      this.body.render.sprite.xScale = 1
-      this.body.render.sprite.yScale = 1
-      this.body.render.sprite.texture = 'https://vignette.wikia.nocookie.net/angry-birds-fanon/images/e/e2/ABGO_Sad_Red.png/revision/latest/scale-to-width-down/340?cb=20160624181829'
-    }
+      this.body.render.sprite.xScale = 1;
+      this.body.render.sprite.yScale = 1;
+    };
 
-    /* ===================================================== 
+    /* =====================================================
      * The Walls
      * ================================================== */
 
     function createWall() {
-
       let w = 20;
       let x = width + w / 2;
       // let maxH = height - 20 * 4; // height minus ground and then some
@@ -189,14 +187,14 @@ function App() {
           createWall();
         }
 
-        // point to translate the wall 
+        // point to translate the wall
         let t = { x: -6, y: 0 };
         Body.translate(wall.top, t);
         Body.translate(wall.bottom, t);
       });
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * The Game Bodies
      * ================================================== */
 
@@ -224,14 +222,11 @@ function App() {
       World.add(engine.world, [ceil, floor]);
     }
 
-
-
-
     function bumpBird() {
       var x = document.getElementById("myAudio");
-      x.play(); 
+      x.play();
       // Applies an upward force to the bird
-      // TODO: need to limit the height, check if   
+      // TODO: need to limit the height, check if
       // the body is on screen before bumping again
       // or alternatively have a ceiling that you hit
       if (collision || !start) return;
@@ -239,20 +234,20 @@ function App() {
       // Body to apply force to
       let b = bird.body;
 
-      // Position to apply Force is at  
+      // Position to apply Force is at
       // the birds current position
       let p = bird.body.position;
 
       // Force vector to be applied
       let f = {
         x: 0,
-        y: -0.03
+        y: -0.03,
       };
 
       Body.applyForce(b, p, f);
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * The Game
      * ================================================== */
 
@@ -264,32 +259,32 @@ function App() {
       // Listeners for the game
 
       // Update the walls when the engine updates
-      Events.on(engine, 'tick', moveWalls);
+      Events.on(engine, "tick", moveWalls);
 
       // Collision Event ends the game :-(
-      Events.on(engine, 'collisionStart', endGame);
+      Events.on(engine, "collisionStart", endGame);
     }
 
     function startGame() {
       start = true;
       engine.world.gravity.y = 0.7;
       // set the bird to static at first
-      startButton.style.display = 'none';
+      startButton.style.display = "none";
     }
 
     function endGame() {
       var x = document.getElementById("sad");
-      x.play(); 
+      x.play();
       collision = true;
       bird.setHit();
 
-      bird.sad()
-      fail.style.display = 'block';
+      bird.sad();
+      fail.style.display = "block";
     }
 
     function resetGame() {
-      startButton.style.display = 'block';
-      fail.style.display = 'none';
+      startButton.style.display = "block";
+      fail.style.display = "none";
 
       resetScore();
       start = false;
@@ -309,8 +304,7 @@ function App() {
       createWall();
     }
 
-
-    /* ===================================================== 
+    /* =====================================================
      * The GUI
      * ================================================== */
 
@@ -321,19 +315,19 @@ function App() {
     let fail;
 
     function setupGUI() {
-      scoreDisplay = document.getElementById('score');
+      scoreDisplay = document.getElementById("score");
       scoreDisplay.innerText = score;
 
-      gui = document.getElementById('gui');
+      gui = document.getElementById("gui");
 
-      startButton = document.getElementById('start');
-      resetButton = document.getElementById('reset');
-      fail = document.getElementById('fail');
-      fail.style.display = 'none';
+      startButton = document.getElementById("start");
+      resetButton = document.getElementById("reset");
+      fail = document.getElementById("fail");
+      fail.style.display = "none";
 
       // Button listeners
-      startButton.addEventListener('click', startGame, false);
-      resetButton.addEventListener('click', resetGame, false);
+      startButton.addEventListener("click", startGame, false);
+      resetButton.addEventListener("click", resetGame, false);
     }
 
     function resetScore() {
@@ -346,7 +340,7 @@ function App() {
       scoreDisplay.innerText = score;
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * Utilities
      * ================================================== */
 
@@ -354,7 +348,7 @@ function App() {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    /* ===================================================== 
+    /* =====================================================
      * Kickoff
      * ================================================== */
 
@@ -362,7 +356,6 @@ function App() {
 
     // Initializes the game
     function init() {
-
       // Setup the Matter engine and renderer
       setupMatter();
 
@@ -374,29 +367,37 @@ function App() {
       createWall();
       createGround();
 
-      // GUI 
+      // GUI
       setupGUI();
 
       // Runs the engine and renderer
       runMatter();
     }
-
-  })
+  });
   return (
     <div id="main">
       <div id="gui">
         <audio id="myAudio">
-          <source src="http://s1download-universal-soundbank.com/mp3/sounds/22372.mp3" type="audio/mpeg" />
+          <source
+            src="http://s1download-universal-soundbank.com/mp3/sounds/22372.mp3"
+            type="audio/mpeg"
+          />
         </audio>
         <audio id="sad">
-          <source src="http://shing.mobile9.com/download/media/702/angrybirds_oaw366ij.mp3" type="audio/mpeg" />
+          <source
+            src="http://shing.mobile9.com/download/media/702/angrybirds_oaw366ij.mp3"
+            type="audio/mpeg"
+          />
         </audio>
         <audio id="myScore">
-          <source src="http://plantsvszombies.clan.su/publfiles/downloads/soundspvz/points.mp3" type="audio/mpeg" />
+          <source
+            src="http://plantsvszombies.clan.su/publfiles/downloads/soundspvz/points.mp3"
+            type="audio/mpeg"
+          />
         </audio>
         <span id="score"></span>
         <button id="start">Start</button>
-        <div id="fail" style={{display: "none"}}>
+        <div id="fail" style={{ display: "none" }}>
           <h2>GAME OVER</h2>
           <button id="reset">Restart</button>
         </div>
